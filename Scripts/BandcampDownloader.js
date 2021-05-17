@@ -6,7 +6,7 @@
 // @supportURL   https://openuserjs.org/scripts/ProxyFiend/Bandcamp_Downloader/issues
 // @copyright    2021, ProxyFiend (https://twitter.com/ProxyFiend)
 // @license      MIT
-// @version      2.0
+// @version      2.1
 // @description  Adds a sidebar to download songs from Bandcamp.
 // @include      *://*.bandcamp.com/*
 // @updateURL    https://openuserjs.org/meta/ProxyFiend/Bandcamp_Downloader.meta.js
@@ -142,11 +142,14 @@ var tracklist = TralbumData.trackinfo;
 
     zip
       .generateAsync({ type: "blob" }, (metadata) => {
-        $(".dl-progress-bar").css("width", `${metadata.percent}%`)
+        $(".dl-progress-bar").css("width", `${metadata.percent}%`);
       })
       .then(
         (blob) => {
-          GM_download(URL.createObjectURL(blob), `${BandData.name} - ${TralbumData.current.title}.zip`);
+          GM_download(
+            URL.createObjectURL(blob),
+            `${BandData.name} - ${TralbumData.current.title}.zip`
+          );
         },
         (e) => {
           console.error(e);
@@ -155,9 +158,7 @@ var tracklist = TralbumData.trackinfo;
   }
 
   // Supporting functions
-  function pad(n, width, z) {
-    z = z || "0";
-    n = n + "";
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  function pad(n, width = 3, z = 0) {
+    return (String(z).repeat(width) + String(n)).slice(String(n).length);
   }
 })();
